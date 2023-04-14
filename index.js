@@ -1,12 +1,19 @@
 import redux from "redux";
-
 const createStore = redux.createStore;
+const bindActionCreators = redux.bindActionCreators;
 
 //action creator
 function orderCake() {
   return {
     type: "ordered_cake",
-    quantity: 1,
+    payload: 1,
+  };
+}
+
+function restockCake() {
+  return {
+    type: "restock_cake",
+    payload: 10,
   };
 }
 
@@ -24,7 +31,12 @@ const reducers = (state = initialValue, action) => {
     case "ordered_cake":
       return {
         ...state,
-        numOfCakes: state.numOfCakes - 1,
+        numOfCakes: state.numOfCakes - action.payload,
+      };
+    case "restock_cake":
+      return {
+        ...state,
+        numOfCakes: state.numOfCakes + action.payload,
       };
     default:
       return state;
@@ -41,12 +53,21 @@ const unsubscribe = store.subscribe(() =>
 );
 
 //we just past the action creator it will create the action for us
-store.dispatch(orderCake());
-store.dispatch(orderCake());
-store.dispatch(orderCake());
-store.dispatch(orderCake());
+// store.dispatch(orderCake());
+// store.dispatch(orderCake());
+// store.dispatch(orderCake());
+// store.dispatch(orderCake());
+// store.dispatch(restockCake());
+
+// Now we will use bindActionCreators
+
+const actions = bindActionCreators({ orderCake, restockCake }, store.dispatch);
+actions.orderCake();
+actions.orderCake();
+actions.orderCake();
+actions.restockCake();
 
 unsubscribe();
 
 //this won't show because we have unsubscribed the listner
-store.dispatch(orderCake());
+// store.dispatch(orderCake());
