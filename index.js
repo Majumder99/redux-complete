@@ -17,10 +17,23 @@ function restockCake() {
   };
 }
 
+function orderIceCream() {
+  return {
+    type: "ordered_ice_cream",
+    payload: 2,
+  };
+}
+function restockIceCream() {
+  return {
+    type: "restock_ice_cream",
+    payload: 10,
+  };
+}
+
 // initial value
 const initialValue = {
   numOfCakes: 10,
-  anotherProperty: "",
+  numOfIccCream: 20,
 };
 
 //reducers means function pure function. which will change the state on basis of the type of action
@@ -37,6 +50,16 @@ const reducers = (state = initialValue, action) => {
       return {
         ...state,
         numOfCakes: state.numOfCakes + action.payload,
+      };
+    case "ordered_ice_cream":
+      return {
+        ...state,
+        numOfIccCream: state.numOfIccCream - action.payload,
+      };
+    case "restock_ice_cream":
+      return {
+        ...state,
+        numOfIccCream: state.numOfIccCream + action.payload,
       };
     default:
       return state;
@@ -61,11 +84,16 @@ const unsubscribe = store.subscribe(() =>
 
 // Now we will use bindActionCreators
 
-const actions = bindActionCreators({ orderCake, restockCake }, store.dispatch);
+const actions = bindActionCreators(
+  { orderCake, restockCake, orderIceCream, restockIceCream },
+  store.dispatch
+);
 actions.orderCake();
 actions.orderCake();
 actions.orderCake();
 actions.restockCake();
+actions.orderIceCream();
+actions.restockIceCream();
 
 unsubscribe();
 
