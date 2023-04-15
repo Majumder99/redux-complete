@@ -1,6 +1,7 @@
 import redux from "redux";
 const createStore = redux.createStore;
 const bindActionCreators = redux.bindActionCreators;
+const combineReducers = redux.combineReducers;
 
 //action creator
 function orderCake() {
@@ -31,15 +32,49 @@ function restockIceCream() {
 }
 
 // initial value
-const initialValue = {
-  numOfCakes: 10,
-  numOfIccCream: 20,
-};
+// const initialValue = {
+//   numOfCakes: 10,
+//   numOfIccCream: 20,
+// };
 
 //reducers means function pure function. which will change the state on basis of the type of action
 
-const reducers = (state = initialValue, action) => {
-  // we can use if/else or switch-case
+// const reducers = (state = initialValue, action) => {
+//   // we can use if/else or switch-case
+//   switch (action.type) {
+//     case "ordered_cake":
+//       return {
+//         ...state,
+//         numOfCakes: state.numOfCakes - action.payload,
+//       };
+//     case "restock_cake":
+//       return {
+//         ...state,
+//         numOfCakes: state.numOfCakes + action.payload,
+//       };
+//     case "ordered_ice_cream":
+//       return {
+//         ...state,
+//         numOfIccCream: state.numOfIccCream - action.payload,
+//       };
+//     case "restock_ice_cream":
+//       return {
+//         ...state,
+//         numOfIccCream: state.numOfIccCream + action.payload,
+//       };
+//     default:
+//       return state;
+//   }
+// };
+const intialCakeValue = {
+  numOfCakes: 10,
+};
+
+const intialIceCreamValue = {
+  numOfIccCream: 10,
+};
+
+const cakeReducer = (state = intialCakeValue, action) => {
   switch (action.type) {
     case "ordered_cake":
       return {
@@ -51,6 +86,13 @@ const reducers = (state = initialValue, action) => {
         ...state,
         numOfCakes: state.numOfCakes + action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+const iceCreamReducer = (state = intialIceCreamValue, action) => {
+  switch (action.type) {
     case "ordered_ice_cream":
       return {
         ...state,
@@ -65,6 +107,8 @@ const reducers = (state = initialValue, action) => {
       return state;
   }
 };
+
+const reducers = combineReducers({ cakeReducer, iceCreamReducer });
 
 //store created. like cake shop
 const store = createStore(reducers);
