@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const icecreamSlice = createSlice({
-  name: "Icecream",
+  name: "icecream",
   initialState,
   reducers: {
     orderIceCream: (state, action) => {
