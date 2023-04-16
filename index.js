@@ -1,8 +1,11 @@
 import redux from "redux";
+import reduxLogger from "redux-logger";
 const createStore = redux.createStore;
 const bindActionCreators = redux.bindActionCreators;
 const combineReducers = redux.combineReducers;
+const applyMiddleware = redux.applyMiddleware;
 
+const logger = reduxLogger.createLogger();
 //action creator
 function orderCake() {
   return {
@@ -111,12 +114,13 @@ const iceCreamReducer = (state = intialIceCreamValue, action) => {
 const reducers = combineReducers({ cakeReducer, iceCreamReducer });
 
 //store created. like cake shop
-const store = createStore(reducers);
+const store = createStore(reducers, applyMiddleware(logger));
 console.log("Initial state ", store.getState());
 
 //this creates a listner, whenever state updated it will call the listner
-const unsubscribe = store.subscribe(() =>
-  console.log("Updated state ", store.getState())
+const unsubscribe = store.subscribe(
+  () => {}
+  // console.log("Updated state ", store.getState())
 );
 
 //we just past the action creator it will create the action for us
